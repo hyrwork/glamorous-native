@@ -6,23 +6,23 @@ import {
 import glamorous from 'glamorous-native'
 
 const Row = glamorous.view(
-        {
-            flexDirection: "row"
-        },
-        (props) => ({
-            justifyContent: props.centered ? "center" : "flex-start"
-        }),
+    {
+        flexDirection: "row"
+    },
+    (props) => ({
+        justifyContent: props.centered ? "center" : "flex-start"
+    }),
     (props, s) => {
-    const {top, right, bottom, left} = props
-    const isAbsolute = [top, right, bottom, left].filter(p => typeof p === "number").length > 0
-    return {
-        position: isAbsolute ? "absolute" : "relative",
-        top,
-        right,
-        bottom,
-        left,
+        const {top, right, bottom, left} = props
+        const isAbsolute = [top, right, bottom, left].filter(p => typeof p === "number").length > 0
+        return {
+            position: isAbsolute ? "absolute" : "relative",
+            top,
+            right,
+            bottom,
+            left,
+        }
     }
-}
 )
 
 const incrementThings = (state, props) => {

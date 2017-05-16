@@ -96,30 +96,73 @@ function glamorous(Comp) {
                 }
             }
 
+            /**
+             * This is a function which will split the
+             * style rules (functions) from the styles passed to
+             * the glamorous component factory as args
+             * @param {...Object|Function} styles
+             * @return {Object}
+             */
+            _splitArgs(args){
+                return args.reduce((split, arg) => {
+                    if (typeof arg === 'function') {
+                        if(arg.length === 1) {
+                            split['staticGlamorRules'] = arg(this.props)
+                        } else {
+                            split['dynamicGlamorRules'] = arg(this.props)
+                        }
+                    } else if (typeof arg === 'object') {
+                        split['glamorStyles'] = arg
+                    }
+                    return split
+                }, {})
+            }
+
+            /**
+             * This is a function which will split the props
+             * that were passed to the component in JSX
+             * @param {...Object} props
+             * @return {Object}
+             */
+            _splitProps({style, ...rest}) {
+                const hasItem = (list, name) => list.indexOf(name) !== -1
+                const isRNStyle = name => hasItem(RNStyles, name)
+                const returnValue = {toForward: {}, styleProps: {}, style}
+                return Object.keys(rest).reduce(
+                    (split, propName) => {
+                        if (isRNStyle(propName)) {
+                            split.styleProps[propName] = rest[propName]
+                        } else {
+                            split.toForward[propName] = rest[propName]
+                        }
+                        return split
+                    },
+                    returnValue,
+                )
+            }
+
             render() {
                 const {...rest} = this.props
-                const {staticGlamorRules, dynamicGlamorRules} = GlamorousComponent.styles.reduce((split, glamorRules) => {
-                    if (typeof glamorRules === 'function') {
-                    if(glamorRules.length === 1) {
-                        split['staticGlamorRules'] = glamorRules(this.props)
-                    } else {
-                        split['dynamicGlamorRules'] = glamorRules(this.props)
-                    }
-                }
-            }, {})
+                const {
+                    staticGlamorRules,
+                    dynamicGlamorRules,
+                    glamorStyles,
+                } = this._splitArgs(styles)
                 const {
                     toForward,
                     styleProps,
                     style,
-                } = splitProps(rest)
+                } = this._splitProps(rest)
                 const staticStyles = {
-                        ...styleProps,
+                    ...glamorStyles,
+                    ...styleProps,
                     ...staticGlamorRules,
-            }
+                }
                 this._cacheStaticStyles(staticStyles)
+
                 const mergedStyles = Array.isArray(style) ?
                     [this.cachedStylesNumber, ...style] :
-                [this.cachedStylesNumber, style]
+                    [this.cachedStylesNumber, style]
 
                 return <Comp style={[mergedStyles, dynamicGlamorRules]} {...toForward} />
             }
@@ -253,23 +296,6 @@ const RNStyles = [
     'zIndex',
 ]
 
-const hasItem = (list, name) => list.indexOf(name) !== -1
-const isRNStyle = name => hasItem(RNStyles, name)
-
-function splitProps({style, ...rest}) {
-    const returnValue = {toForward: {}, styleProps: {}, style}
-    return Object.keys(rest).reduce(
-            (split, propName) => {
-            if (isRNStyle(propName)) {
-        split.styleProps[propName] = rest[propName]
-    } else {
-        split.toForward[propName] = rest[propName]
-    }
-    return split
-},
-    returnValue,
-)
-}
 
 export default glamorous
 // export {ThemeProvider}
