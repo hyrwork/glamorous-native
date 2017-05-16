@@ -1,0 +1,26 @@
+{
+  "name": "glamorous-native",
+  "version": "0.0.1",
+  "description": "React Native component styling solved",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyrwork/glamorous-native.git"
+  },
+  "keywords": [
+    "react",
+    "styled-components",
+    "glamor",
+    "react-native",
+    "jsx-style"
+  ],
+  "author": "Cameron Moss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyrwork/glamorous-native/issues"
+  },
+  "homepage": "https://github.com/hyrwork/glamorous-native#readme"
+}
