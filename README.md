@@ -6,4 +6,4 @@ Unlike the web version, here we have to divide styles into chachable (static) st
 
 Because of that, let's start by defining which are which. Here is what I am proposing
 
-<img src="styles.png">
+<img src="styles.png" style="width: 100%;">
