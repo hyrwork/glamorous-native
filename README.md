@@ -1,3 +1,10 @@
+### no longer supported
+
+The great team at Robin released a better version of this [here](https://github.com/robinpowered/glamorous-native)
+
+There are some good notes here about caching styles but otherwise I'm supporting their implementation and will not update this most likely.
+
+
 # glamorous-native
 React Native component styling solved 💄
 
